@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Morse Code Decoder</title>
+</head>
+<body>
+    <h1>Morse Code Decoder</h1>
+    <p>Enter your Morse code in the following format (single space between characters, triple space between words):</p>
+    <input type="text" id="morse_code" placeholder="Digite o código Morse (espaço simples entre caracteres, espaço triplo entre palavras)">
+    <button onclick="decodeMorse()">Decode</button>
+    <p id="result"></p>
+
+    <script>
+        function decodeMorse(morseCode) {
+            // Get the Morse code from the input field
+            const inputMorseCode = document.getElementById("morse_code").value;
+
+            // Error handling: Check for empty input
+            if (!inputMorseCode) {
+                alert("Please enter some Morse code to decode.");
+                return;
+            }
+
+            // Trim leading/trailing spaces
+            morseCode = inputMorseCode.trim();
+
+            // Morse code dictionary (updated for clarity)
+            const MORSE_CODE = {
+                '.-': 'A', '-...': 'B', '-.-.': 'C', '-..': 'D', '.': 'E',
+                '..-.': 'F', '--.': 'G', '....': 'H', '..': 'I', '.---': 'J',
+                '-.-': 'K', '.-..': 'L', '--': 'M', '-.': 'N', '---': 'O',
+                '.--.': 'P', '--.-': 'Q', '.-.': 'R', '...': 'S', '-': 'T',
+                '..-': 'U', '...-': 'V', '.--': 'W', '-..-': 'X', '-.--': 'Y',
+                '--..': 'Z', '-----': '0', '.----': '1', '..---': '2', '...--': '3',
+                '....-': '4', '.....': '5', '-....': '6', '--...': '7', '---..': '8',
+                '----.': '9', '.-.-.-': '.', '--..--': ',', '..--..': '?', '-.-.--': '!',
+                '-....-': '-', '.----.': "'", '-.-.-.': ';', '-..-.': '/', '.-..-.': '"',
+                '.--.-.': '@', '---...': ':', '-.-.-.-': '.', '-...-': '=', '.-.-.': '+',
+            };
+
+            // Split the Morse code into words based on 3 spaces
+            const words = morseCode.split('   ');
+
+            // Decode each word
+            const decodedWords = words.map(word => {
+                // Split the word into individual Morse characters
+                const characters = word.split(' ');
+
+                // Decode each Morse character
+                return characters.map(char => {
+                    // Error handling: Check for invalid characters
+                    if (!MORSE_CODE.hasOwnProperty(char)) {
+                        console.warn(`Invalid Morse code character: "${char}"`);
+                        return ''; // Or handle invalid characters differently (e.g., display a warning)
+                    }
+                    return MORSE_CODE[char];
+                }).join('');
+            });
+
+        // Join the decoded words and display the result
+        const decodedText = decodedWords.join(' ');
+        document.getElementById("result").textContent = decodedText;
+    }
+    </script>
+</body>
+</html>
